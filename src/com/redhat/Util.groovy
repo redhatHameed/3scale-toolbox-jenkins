@@ -17,6 +17,18 @@ def readOpenAPISpecificationFile(fileName) {
     }
 }
 
+def validatePlanFile(filePath) {
+
+    if (!filePath?.trim()) {
+        throw new Exception(" The import yaml file path is null or empty. ${filePath}")
+    }else  if (filePath.toLowerCase().endsWith(".yaml") || filePath.toLowerCase().endsWith(".yml")) {
+        return true
+    } else {
+        throw new Exception("Can't decide file is YAML at path ${filePath}")
+    }
+}
+
+
 def readFile(String filename) {
     return readFile(file: filename)
 }

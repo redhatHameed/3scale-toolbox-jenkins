@@ -80,6 +80,15 @@ Add a stage to create the Application Plans:
   }
 ```
 
+Add a stage to import the application plans with pricing rules from yaml file  :
+
+```groovy
+    stage("Import Application Plan") {
+        def planFilePath="https://raw.githubusercontent.com/redhatHameed/API-Lifecycle-Mockup/master/testcase-01/plan.yaml"
+        service.importApplicationPlans(planFilePath)
+        }
+```
+
 Add a global variable and a stage to create the test Application:
 
 ```groovy
