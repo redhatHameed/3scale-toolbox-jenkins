@@ -60,25 +60,8 @@ class ThreescaleService {
         this.applicationPlans.each {
             def commandLine
 
-            if (it.systemName != null && it.artefactFile?.trim()) {
-
-                commandLine = ["3scale", "application-plan", "apply"] + globalOptions + [this.toolbox.destination, this.environment.targetSystemName, it.systemName]
-                commandLine += ["--approval-required=${it.approvalRequired}",
-                                "--cost-per-month=${it.costPerMonth}",
-                                "--name=${it.name}",
-                                "--publish=${it.published}",
-                                "--setup-fee=${it.setupFee}",
-                                "--trial-period-days=${it.trialPeriodDays}"]
-
-                if (it.defaultPlan) {
-                    commandLine += "--default"
-                }
-                commandLine += [";", "3scale", "application-plan", "import", "-f"] + it.artefactFile + globalOptions + [this.toolbox.destination, this.environment.targetSystemName]
-
-            } else if (it.artefactFile?.trim()) {
-
-                commandLine += ["3scale", "application-plan", "import", "-f"] + it.artefactFile + globalOptions + [this.toolbox.destination, this.environment.targetSystemName]
-
+          if (it.artefactFile?.trim()) {
+                commandLine = ["3scale", "application-plan", "import", "-f"] + it.artefactFile + globalOptions + [this.toolbox.destination, this.environment.targetSystemName]
             } else {
                 commandLine = ["3scale", "application-plan", "apply"] + globalOptions + [this.toolbox.destination, this.environment.targetSystemName, it.systemName]
                 commandLine += ["--approval-required=${it.approvalRequired}",
@@ -92,12 +75,22 @@ class ThreescaleService {
                     commandLine += "--default"
                 }
 
-
             }
             toolbox.runToolbox(commandLine: commandLine,
                     jobName: "apply-application-plan-${it.systemName}")
         }
     }
+
+    void importApplicationPlans(String yamlPlanFile) {
+
+            def globalOptions = toolbox.getGlobalToolboxOptions()
+            def commandLine = ["3scale", "application-plan", "import", "-f"] + yamlPlanFile + globalOptions + [this.toolbox.destination, this.environment.targetSystemName]
+
+            toolbox.runToolbox(commandLine: commandLine,
+                    jobName: "import-application-plan")
+
+    }
+
 
     void applyApplication() {
 

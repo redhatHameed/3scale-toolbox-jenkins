@@ -22,6 +22,7 @@ def runToolbox(ToolboxConfiguration conf, Map call) {
         echo "Creating a configMap named ${oasConfigMapName} containing the OpenAPI file..."
         createConfigMap(openshift, oasConfigMapName, [ (call.openAPI.filename): call.openAPI.content ])
       }
+      echo "commandLine named ${call.commandLine } containing the OpenAPI file..."
 
       // Job name and labels are limited to 63 characters and cannot end with a dash (-)
       def jobName = "${JOB_BASE_NAME}-${BUILD_NUMBER}-${call.jobName}".take(63)
